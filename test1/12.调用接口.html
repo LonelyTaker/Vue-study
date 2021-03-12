@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>调用本地接口</title>
+    <script src="./lib/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+</head>
+
+<body>
+    <div id="test">
+        <input type="button" @click="add" value="调用接口">
+    </div>
+
+    <script>
+        
+
+        var vm = new Vue({
+            el: "#test",
+            data: {
+                
+            },
+            methods: {
+                add(){
+                    //本地调试遇到跨域问题，在后端服务器设置跨域资源共享
+                    axios.get("https://localhost:44351/api/test")
+                    .then(res => {
+                        console.log("1");
+                        console.log(res);
+                    })
+                    .catch(err => {
+                        console.log("0");
+                        console.error(err); 
+                    })
+                },
+            },
+            
+        });
+    </script>
+</body>
+
+</html>

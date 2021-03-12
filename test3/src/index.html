@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>列表隔行变色案例</title>
+    <!-- 这种方式实现效果，会发起不必要的网络请求 -->
+    <!-- <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="./index.js"></script> -->
+
+    <!-- 不要直接导入index.js ，因为它又兼容性问题 -->
+    <!-- <script src="./index.js"></script> -->
+
+    <!-- 应该导入webpack打包处理好的main.js -->
+    <!-- <script src="../dist/main.js"></script> -->
+
+    <!-- 如果使用webpack-dev-server实现了实时打包，
+        则打包好的文件会被放到项目根目录中，
+    而且打包好的文件是隐藏的 -->
+    <!-- <script src="/main.js"></script> -->
+
+    <!-- <link rel="stylesheet" href="/src/css/1.css"> -->
+</head>
+<body>
+    <ul>
+        <li>这是第1个li</li>
+        <li>这是第2个li</li>
+        <li>这是第3个li</li>
+        <li>这是第4个li</li>
+        <li>这是第5个li</li>
+        <li>这是第6个li</li>
+        <li>这是第7个li</li>
+        <li>这是第8个li</li>
+        <li>这是第9个li</li>
+        <li>这是第10个li</li>
+    </ul>
+
+    <div id="box"></div>
+    <button type="button" class="btn btn-primary">按钮</button>
+    
+</body>
+</html>

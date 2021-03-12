@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./lib/vue.js"></script>
+    <link rel="stylesheet" href="./lib/bootstrap.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        li{
+            border: 1px dashed #999;
+            margin: 5px;
+            line-height: 35px;
+            font-size: 14px;
+            padding-left: 5px;
+            width: 100%;
+            position: relative;
+        }
+        .v-enter,
+        .v-leave-to{
+            transform: translateY(100px);
+            opacity: 0;
+        }
+        .v-enter-active,
+        .v-leave-active{
+            transition: all 0.8s ease;
+        }
+        /* 为即将被删除的元素添加样式，让他脱离标准流 */
+        .v-leave-active{
+            position: absolute;
+            width: 100%;
+        }
+        /* 通过v-move这个类，可以让后续元素渐渐地顶上去 */
+        .v-move{
+            transition: all 0.8s ease;
+        }
+    </style>
+</head>
+<body>
+    <div id="test">
+        <div>
+            <input type="text" v-model="name">
+            <button @click="add">添加</button>
+        </div>
+        <ul>
+            <transition-group>
+                <li v-for="(item,i) in list" :key="item.id" @click="remove(i)">{{item.id}}---->{{item.name}}</li>
+            </transition-group>            
+        </ul>
+    </div>
+    <script>
+        var vm=new Vue({
+            el: "#test",
+            data:{
+                name:'',
+                newId: 3,
+                list:[
+                    {id:1,name:"雷神"},
+                    {id:2,name:"蜘蛛侠"},
+                    {id:3,name:"钢铁侠"}
+                ]
+            },
+            methods: {
+                add(){
+                    if(this.name!=''){
+                        const newInfo={id:++this.newId,name:this.name};
+                        this.list.push(newInfo);
+                        this.name='';
+                    }
+                },
+                remove(i){
+                    this.list.splice(i,1)
+                }
+            },
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>品牌列表案例</title>
+    <script src="./lib/vue.js"></script>
+    <link rel="stylesheet" href="./lib/bootstrap.css">
+
+</head>
+
+<body>
+    <div id="test">
+
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">添加品牌</h3>
+            </div>
+            <div class="panel-body form-inline">
+                <label>
+                    Id:
+                    <input type="text" v-model="add_id">
+                </label>
+                <label>
+                    Name:
+                    <input type="text" v-model="add_name" @keyup.enter="add">
+                </label>
+                <button type="button" class="btn btn-primary" @click="add">添加</button>
+                <label>
+                    搜索关键字：
+                    <!-- 自定义指令，需要v-开头 -->
+                    <input type="text" v-model="keywords" v-focus v-color="'blue'">
+                </label>
+
+            </div>
+        </div>
+
+
+        <table class="table table-hover table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Ctime</th>
+                    <th>Operation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(item, index) in search(keywords)" :key="item.id">
+                    <td>{{item.id}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{ item.ctime | timeFormat}}</td>
+                    <td>
+                        <a href="" @click.prevent="del(item.id)">删除</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // //全局过滤器
+        // Vue.filter('timeFormat',function(time){
+        //     //通过给定的时间字符串，得到时间
+        //     var dt=new Date(time);
+        //     //yyyy-mm-dd
+        //     var y=dt.getFullYear();
+        //     var m=dt.getMonth()+1;
+        //     var d=dt.getDate();//getDay得到星期几
+        //     var h=dt.getHours();
+        //     var min=dt.getMinutes();
+        //     var s=dt.getSeconds();
+        //     return `${y}-${m}-${d} ${h}:${min}:${s}`;
+        // })
+
+        //使用Vue.directive()定义全局指令
+        //其中：参数1：指令的名称，注意，在定义的时候，指令的名称前面不需要加v-前缀，在调用的时候，需要加上v-前缀
+        //     参数2：是一个对象
+        // Vue.directive('focus', {
+        //     //每当指令绑定到元素上的时候，会立即执行bind函数，只执行一次
+        //     bind: function (el) {
+        //         //在每个函数中，第一个参数永远是el，表示被绑定了指令的元素，这个el参数是一个原生的js对象
+        //         //当元素刚绑定了指令的时候，还没有插入到DOM中去，这时候调用focus方法没用
+        //         //el.focus();
+        //     },
+        //     //当绑定元素插入DOM中，会调用inserted函数,只触发一次
+        //     inserted: function (el) {
+        //         el.focus();
+        //     },
+        //     //当vnode更新的时候，会执行updated函数，可能会触发多次
+        //     updated: function (el) {
+
+        //     },
+        // })
+
+        // //自定义一个设置字体颜色的指令
+        // Vue.directive('color', {
+        //     bind: function (el,binding) {
+        //         el.style.color=binding.value;
+        //     },
+        // })
+
+        var vm = new Vue({
+            el: "#test",
+            data: {
+                list: [{
+                        id: 1,
+                        name: '奔驰',
+                        ctime: new Date()
+                    },
+                    {
+                        id: 2,
+                        name: '宝马',
+                        ctime: new Date()
+                    },
+                ],
+                add_id: null,
+                add_name: null,
+                keywords: null,
+            },
+            methods: {
+                add() {
+                    if (this.add_id != null && this.add_name != null) {
+                        this.list.push({
+                            id: this.add_id,
+                            name: this.add_name,
+                            ctime: new Date()
+                        });
+                        this.add_id = this.add_name = null;
+                    }
+                },
+                del(id) {
+                    this.list.some((item, i) => {
+                        if (item.id == id) {
+                            this.list.splice(i, 1);
+                            return true;
+                        }
+                    })
+                },
+                search(keywords) {
+                    if (keywords == null) {
+                        return this.list;
+                    } else {
+                        // var newlist=[];
+                        // this.list.forEach(item => {
+                        //     if(item.name.indexOf(keywords) != -1){
+                        //     newlist.push(item);
+                        //     }
+                        // });
+                        var newlist = this.list.filter(item => {
+                            if (item.name.includes(keywords)) {
+                                return item;
+                            }
+                        });
+                        return newlist;
+                    }
+                },
+            },
+            filters: { //定义私有过滤器
+                //过滤器调用的时候，采用就近原则，如果私有过滤器和全局过滤器名称一致，优先调用私有过滤器
+                timeFormat: function (time) {
+                    //通过给定的时间字符串，得到时间
+                    var dt = new Date(time);
+                    //yyyy-mm-dd
+                    var y = dt.getFullYear();
+                    var m = (dt.getMonth() + 1).toString().padStart(2, '0'); //padStart方法用于填充字符
+                    var d = dt.getDate(); //getDay得到星期几
+                    var h = dt.getHours();
+                    var min = dt.getMinutes();
+                    var s = dt.getSeconds();
+                    return `${y}-${m}-${d} ${h}:${min}:${s}`;
+                },
+            },
+            directives:{//定义私有指令
+                color:{
+                    bind:function(el,binding){
+                        el.style.color=binding.value;
+                    }
+                },
+                focus:{
+                    inserted:function(el){
+                        el.focus();
+                    }
+                },
+                fontsize:function(el,binding){//这个function等于在对象bind和update中函数中写
+                    el.style.fontSize=parseInt(binding.value)+'px';
+                },
+            }
+        });
+    </script>
+</body>
+
+</html>

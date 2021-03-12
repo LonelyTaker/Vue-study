@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+		[v-clock]{
+			display: none;
+		}
+	</style>
+	<script src="./lib/vue.js"></script>
+</head>
+<body>
+
+	<div id="test">
+		<input type="button" value="开始" @click="start"> 
+		<input type="button" value="结束" @click="over">
+		<h1 v-text="msg"></h1>
+	</div>
+
+	<script>
+		var vm = new Vue({
+			el: '#test', 
+			data: { 
+				msg: '猥琐发育，别浪~', 
+				intervalId: null,
+			}, 
+			methods: {
+				lang(){
+					var start=this.msg.substring(0,1);
+					var end =this.msg.substring(1);
+					this.msg=end+start;
+				},
+				start(){
+					if(this.intervalId!=null) return;
+					this.intervalId=setInterval(this.lang,300);
+				},
+				over(){
+					clearInterval(this.intervalId);
+					this.intervalId=null;
+				}
+			},
+		})
+	</script>
+</body>
+</html>

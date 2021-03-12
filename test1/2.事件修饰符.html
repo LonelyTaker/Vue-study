@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+    <style>
+        .inner{
+            height: 150px;
+            background-color: pink;
+
+        }
+    </style>
+	<script src="./lib/vue.js"></script>
+</head>
+<body>
+
+	<div id="test">
+
+		<div class="inner" @click="divHandler">
+            <input type="button" value="戳他" @click="btnHandler">
+        </div>
+
+
+		<!-- .stop阻止冒泡 -->
+		<div class="inner" @click="divHandler">
+            <input type="button" value="戳他" @click.stop="btnHandler">
+        </div>
+
+		<!-- .prevent阻止默认行为 -->
+		<a href="http://www.baidu.com" @click.prevent="linkclick">请百度</a>
+
+		<!-- .capture捕获机制 -->
+		<div class="inner" @click.capture="divHandler">
+            <input type="button" value="戳他" @click="btnHandler">
+        </div>
+
+		<!-- .self实现只有点击当前元素才会触发事件处理函数 -->
+		<div class="inner" @click.self="divHandler">
+            <input type="button" value="戳他" @click="btnHandler">
+        </div>
+
+		<!-- .once只触发一次事件处理函数 -->
+		<a href="http://www.baidu.com" @click.prevent.once="linkclick">请百度</a>
+
+	</div>
+
+	<script>
+		var vm = new Vue({
+			el: '#test', 
+			data: { 
+				
+			}, 
+			methods: {
+				divHandler(){
+					console.log("divHandler");
+				},
+				btnHandler(){
+					console.log("btnHandler");
+				},
+				linkclick(){
+					console.log("linkclick");
+				},
+			},
+		})
+	</script>
+</body>
+</html>

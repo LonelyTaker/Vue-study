@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./lib/vue.js"></script>
+    <link rel="stylesheet" href="./lib/bootstrap.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <!-- 2.在header区域，自定义两组动画的类名 -->
+    <style>
+        /* 定义元素入场之前和离场之后的样式 */
+        .test-enter,
+        .test-leave-to{
+            transform: translateX(150px);
+            opacity: 0;
+        }
+        /* 定义元素入场阶段和离场阶段的过渡效果 */
+        .test-enter-active,
+        .test-leave-active{
+            transition: all 0.8s ease;
+        }
+        /* 定义元素在标准流中的样式效果，这个标准流中的样式效果，
+        就是入场完成后，以及离场开始之前的元素样式 */
+        h3{
+            transform: translateX(50px);
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div id="test">
+        <button @click="flag=!flag">Toggle</button>
+        <!-- 1.用Vue框架提供的transition标签把需要添加动画的元素包裹起来 -->
+        <transition name="test">
+            <h3 v-if="flag">五花肉！</h3>
+        </transition>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#test",
+            data:{
+                //默认隐藏元素
+                flag:false
+            },
+            methods: {
+                
+            },
+        })
+    </script>
+</body>
+</html>
